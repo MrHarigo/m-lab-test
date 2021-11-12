@@ -35,6 +35,10 @@ class UsersService implements CRUD {
     async getUserByEmailWithPassword(email: string) {
         return UsersDao.getUserByEmailWithPassword(email);
     }
+
+    async addVideoToFavorites(userId: string, videoId: string) {
+        return UsersDao.addVideoToFavorites(userId, videoId);
+    }
 }
 
 export default new UsersService();

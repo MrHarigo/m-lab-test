@@ -13,6 +13,7 @@ import { CommonRoutesConfig } from './src/common/common.routes.config';
 import { UsersRoutes } from './src/users/users.routes.config';
 import { AuthRoutes } from './src/auth/auth.routes.config';
 import { VideosRoutes } from './src/videos/videos.routes.config';
+import { FavoritesRoutes } from './src/favorites/favorites.routes.config';
 import debug from 'debug';
 import helmet from 'helmet';
 
@@ -52,6 +53,7 @@ app.use(expressWinston.logger(loggerOptions));
 routes.push(new UsersRoutes(app));
 routes.push(new AuthRoutes(app));
 routes.push(new VideosRoutes(app));
+routes.push(new FavoritesRoutes(app));
 
 const runningMessage = `Server running at http://localhost:${port}`;
 app.get('/', (req: express.Request, res: express.Response) => {

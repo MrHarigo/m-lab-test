@@ -13,11 +13,13 @@ tags:
     description: /users/* endpoints
   - name: Authentication 
     description: authentication-related endpoints
+  - name: Favorites
+    description: /favorites/* endpoints
 paths:
   /auth:
     post:
       tags:
-      - Authentication
+        - Authentication
       summary: Authenticates the user.
       description: User has to be already created
       requestBody:
@@ -28,7 +30,7 @@ paths:
               $ref: '#/components/schemas/Login'
       responses:
         '201':
-          description: Returns access token and refresh token
+          description: Authentication successful
           content:
             application/json:
               schema:
@@ -36,21 +38,37 @@ paths:
   /users:
     get:
       tags:
-      - Users
+        - Users
       summary: Returns a list of users.
       description: Requires admin permission.
       security: 
         - bearerAuth: []
       responses:
         '200':   
-          description: A JSON array of users
+          description: OK
           content:
             application/json:
               schema: 
                 type: array
                 items: 
                   $ref: '#/components/schemas/User'
-
+  /favorites:
+    get:
+      tags:
+        - Favorites
+      summary: Returns favorites of the current user
+      description: Requires a valid JWT token
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Video'
 # Components
 components:
   schemas:
@@ -90,6 +108,14 @@ components:
         refreshToken: 
           type: string
           #description: refreshToken 
+    Video:
+      title: Video
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
 
   securitySchemes:
     bearerAuth:

@@ -2,7 +2,7 @@ import { CommonRoutesConfig } from '../common/common.routes.config';
 import VideosController from './controllers/videos.controller';
 import VideosMiddleware from './middleware/videos.middleware';
 import jwtMiddleware from '../auth/middleware/jwt.middleware';
-import permissionMiddleware from '../common/middleware/common.permission.middleware';
+import PermissionMiddleware from '../common/middleware/common.permission.middleware';
 import { PermissionFlag } from '../common/middleware/common.permissionflag.enum';
 import BodyValidationMiddleware from '../common/middleware/body.validation.middleware';
 import { body } from 'express-validator';
@@ -36,13 +36,14 @@ export class VideosRoutes extends CommonRoutesConfig {
         this.app
             .route(`/videos/:videoId`)
             .all(
-                VideosMiddleware.validateVideoExists
+                VideosMiddleware.validateVideoExists,
+                PermissionMiddleware.permissionFlagRequired(
+                    PermissionFlag.EDITOR_PERMISSION
+                ),
             )
             .get(VideosController.getVideoById)
             .delete(
-                permissionMiddleware.permissionFlagRequired(
-                    PermissionFlag.EDITOR_PERMISSION
-                ),
+                
                 VideosController.removeVideo
             );
 
@@ -53,7 +54,7 @@ export class VideosRoutes extends CommonRoutesConfig {
                 .withMessage('Must include a name (non-empty string)'),
             body('description').isString(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
-            permissionMiddleware.permissionFlagRequired(
+            PermissionMiddleware.permissionFlagRequired(
                 PermissionFlag.EDITOR_PERMISSION
             ),
             VideosController.put,
@@ -66,7 +67,7 @@ export class VideosRoutes extends CommonRoutesConfig {
                 .withMessage('Must include a name (non-empty string)'),
             body('description').isString(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
-            permissionMiddleware.permissionFlagRequired(
+            PermissionMiddleware.permissionFlagRequired(
                 PermissionFlag.EDITOR_PERMISSION
             ),
             VideosController.patch,

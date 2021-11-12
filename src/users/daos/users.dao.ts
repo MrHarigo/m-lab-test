@@ -18,6 +18,7 @@ class UsersDao {
         firstName: String,
         lastName: String,
         permissionFlags: Number,
+        favorites: [String]
     }, { id: false });
 
     User = mongooseService.getMongoose().model('Users', this.userSchema);
@@ -32,6 +33,7 @@ class UsersDao {
             _id: userId,
             ...userFields,
             permissionFlags: PermissionFlag.FREE_PERMISSION,
+            favorites: []
         });
         await user.save();
         return userId;
@@ -72,6 +74,19 @@ class UsersDao {
             { new: true }
         ).exec();
 
+        return existingUser;
+    }
+
+    async addVideoToFavorites(
+        userId: string,
+        videoId: string
+    ) {
+        const existingUser = await this.User.findOneAndUpdate(
+            { _id: userId },
+            { $push: { favorites: videoId } },
+            { new: true }
+        ).exec();
+        
         return existingUser;
     }
 }

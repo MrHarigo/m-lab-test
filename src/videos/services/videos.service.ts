@@ -28,6 +28,10 @@ class VideosService implements CRUD {
     async readById(id: string) {
         return VideosDao.getVideoById(id);
     }
+
+    async getByIds(ids: [string]) {
+        return VideosDao.getVideosByIds(ids);
+    }
 }
 
 export default new VideosService();

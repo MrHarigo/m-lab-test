@@ -61,6 +61,13 @@ class VideosDao {
 
         return existingVideo;
     }
+
+    async getVideosByIds(ids: [string]) {
+        const videos = await this.Video.find(
+            { _id: { $in: ids } }
+        ).exec();
+        return videos;
+    }
 }
 
 export default new VideosDao();

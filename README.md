@@ -14,7 +14,7 @@ In order to run the cloned codebase directly, you need to have Node.js and Docke
  - user unit tests (for complete coverage)
  - video unit tests
  - video search functionality (tags?) + tests
- - favourites functionality + tests
+ - separate tests for controller/service/model
  - deploy/containerize for easier checks
  
 # Stuff To Add
