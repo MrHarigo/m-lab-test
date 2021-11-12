@@ -16,6 +16,10 @@ import { VideosRoutes } from './src/videos/videos.routes.config';
 import debug from 'debug';
 import helmet from 'helmet';
 
+const YAML = require('yamljs');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = YAML.load('./swagger-config.yaml');
+
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
 const port = 3000;
@@ -25,6 +29,7 @@ const debugLog: debug.IDebugger = debug('app');
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const loggerOptions: expressWinston.LoggerOptions = {
     transports: [new winston.transports.Console()],

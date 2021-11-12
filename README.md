@@ -22,8 +22,7 @@ In order to run the cloned codebase directly, you need to have Node.js and Docke
  - further containerization
  - creating additional db for test runs?
  - CI/CD
- - nyc for test-reports
- - swagger for easier manual testing (if potentionally needed)
+ - jsdoc for better documentation
 
 # Manual Testing Guide
  //
