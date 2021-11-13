@@ -78,6 +78,13 @@ class MoviesDao {
         .skip(limit * page)
         .exec();
     }
+
+    async getMoviesByNameAndDescription(name: string, description: string) {
+        return await this.Movie.find({
+            name: name,
+            description: description
+        }).exec();
+    }
 }
 
 export default new MoviesDao();

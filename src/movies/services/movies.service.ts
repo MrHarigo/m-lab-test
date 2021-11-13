@@ -36,6 +36,10 @@ class MoviesService implements CRUD {
     async search(searchQuery: string, limit: number, page: number) {
         return MoviesDao.getMoviesBySearchQuery(searchQuery, limit, page);
     }
+
+    async findIdentical(name: string, description: string) {
+        return MoviesDao.getMoviesByNameAndDescription(name, description);
+    }
 }
 
 export default new MoviesService();

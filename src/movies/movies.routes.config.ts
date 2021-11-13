@@ -32,7 +32,7 @@ export class MoviesRoutes extends CommonRoutesConfig {
                     PermissionFlag.EDITOR_PERMISSION
                 ),
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
-                // Not checking for existing duplicates, due to the fact that films might have same names
+                MoviesMiddleware.validateNameAndDescriptionAvailability,
                 MoviesController.createMovie
             );
 
@@ -62,6 +62,8 @@ export class MoviesRoutes extends CommonRoutesConfig {
                 PermissionFlag.EDITOR_PERMISSION
             ),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
+            MoviesMiddleware.validateMovieExists,
+            MoviesMiddleware.validateNameAndDescriptionAvailability,
             MoviesController.put,
         ]);
 
@@ -79,6 +81,8 @@ export class MoviesRoutes extends CommonRoutesConfig {
             PermissionMiddleware.permissionFlagRequired(
                 PermissionFlag.EDITOR_PERMISSION
             ),
+            MoviesMiddleware.validateMovieExists,
+            MoviesMiddleware.validateNameAndDescriptionAvailability,
             MoviesController.patch,
         ]);
         
