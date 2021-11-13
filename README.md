@@ -11,7 +11,7 @@ In order to run the cloned codebase directly, you need to have Node.js and Docke
   - `npm run debug`
 
  # Stuff To Finish
- - swagger api documentation
+ - check if added movie is completely identical
  - better unit test structure (additional db / more beforeTest functions)
  - basic movie/favorites unit tests
  - better error handling/error codes

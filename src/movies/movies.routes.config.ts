@@ -69,8 +69,11 @@ export class MoviesRoutes extends CommonRoutesConfig {
             body('name')
                 .isString()
                 .isLength({ min: 1 })
-                .withMessage('Must include a name (non-empty string)'),
-            body('description').isString(),
+                .withMessage('Must include a name (non-empty string)')
+                .optional(),
+            body('description')
+                .isString()
+                .optional(),
             jwtMiddleware.validJWTNeeded,
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             PermissionMiddleware.permissionFlagRequired(

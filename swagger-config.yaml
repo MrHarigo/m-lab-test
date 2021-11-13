@@ -3,6 +3,7 @@ info:
   title: Sample API
   description: Test project for monstar-lab
   version: 0.1.0
+  
 #servers:
 #  - url: http://api.example.com/v1
 #    description: Optional server description, e.g. Main (production) server
@@ -37,6 +38,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Authentication'
+  /auth/refresh-token:
+    post:
+      tags:
+        - Authentication
+      summary: Refresh the token
+      description: Needs existing tokens 
+      security: 
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Refresh-token'
+      responses:
+        '201':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Authentication'
+        '401':
+          description: Unauthorized 
+        
   /users:
     get:
       tags:
@@ -53,7 +78,191 @@ paths:
               schema: 
                 type: array
                 items: 
-                  $ref: '#/components/schemas/User'
+                  $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Unauthorized 
+        '403':
+          description: Forbidden
+    post:
+      tags:
+        - Users
+      summary: Create a new user
+      description: Creates a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: 
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+  /users/{userId}:
+    get:
+      tags:
+        - Users
+      summary: Return information about selected user
+      security: 
+        - bearerAuth: []
+      parameters:
+        - $ref:  '#/components/parameters/userId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Unauthorized 
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+    delete:
+      tags:
+        - Users
+      summary: Delete a selected user
+      description: Needs to be the same user or ADMIN
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref:  '#/components/parameters/userId'
+      responses:
+        '204':
+          description: Successfully deleted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+    put:
+      tags:
+        - Users 
+      summary: Update the whole user
+      description: Needs to be the same user or ADMIN, can't update permission
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '204':
+          description: Updated
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+    patch:
+      tags:
+        - Users
+      summary: Update the user
+      description: Needs to be the same user or ADMIN, can't update permission
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '204':
+          description: Updated
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+  /users/{userId}/permissionFlags/{permissionFlags}:
+    put:
+      tags:
+        - Users 
+      summary: Update permissionFlags
+      description: Needs to be ADMIN
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/permissionFlags'
+      responses:
+        '204':
+          description: Updated
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+
   /movies:
     get:
       tags:
@@ -74,8 +283,157 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Movie'
-  
+                  $ref: '#/components/schemas/MovieResponse'
+    post:
+      tags:
+        - Movies 
+      summary: Create a new movie 
+      description: Requires editor permission
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: 
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+        '401':
+          description: Unauthorized   
+        '403':
+          description: Forbidden
+  /movies/{movieId}:
+    get:
+      tags:
+        - Movies
+      summary: Return information about selected movie
+      parameters:
+        - $ref:  '#/components/parameters/movieId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+    delete:
+      tags:
+        - Movies
+      summary: Delete a selected movie
+      description: Requires editor permission
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref:  '#/components/parameters/movieId'
+      responses:
+        '204':
+          description: Successfully deleted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+    put:
+      tags:
+        - Movies 
+      summary: Update the whole movie 
+      description: Requires editor permission
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/movieId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+      responses:
+        '204':
+          description: Updated
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+    patch:
+      tags:
+        - Movies 
+      summary: Update the movie 
+      description: Requires editor permission
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/movieId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+      responses:
+        '204':
+          description: Updated
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+
   /favorites:
     get:
       tags:
@@ -92,7 +450,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Movie'
+                  $ref: '#/components/schemas/MovieResponse'
         '401':
           description: Unauthorized   
   /favorites/{movieId}:
@@ -104,12 +462,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
-        - in: path
-          name: movieId
-          schema: 
-            type: string
-          required: true
-          description: String ID of the movie to favorite
+        - $ref:  '#/components/parameters/movieId'
       responses:
         '204':
           description: Successfully added to favorites
@@ -135,12 +488,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
-        - in: path
-          name: movieId
-          schema: 
-            type: string
-          required: true
-          description: String ID of the movie to delete from favorites
+        - $ref:  '#/components/parameters/movieId'
       responses:
         '204':
           description: Successfully deleted from favorites
@@ -159,9 +507,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorsResponse'
           
-
 # Components
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
+  parameters:
+    movieId:
+      in: path
+      name: movieId
+      schema: 
+        type: string
+      required: true
+      description: String ID of the movie
+    userId:
+      in: path
+      name: userId
+      schema: 
+        type: string
+      required: true
+      description: String ID of the user
+    permissionFlags:
+      in: path
+      name: permissionFlags
+      schema:
+        type: number
+      required: true
+      description: PermissionFlag of the user
   schemas:
     ErrorsResponse:
       title: ErrorResponse
@@ -172,8 +546,58 @@ components:
           items: 
             type: string
             description: Error message
-    User:
-      title: User
+    Login:
+      title: Login
+      type: object
+      properties:
+        email:
+          type: string
+          #description: users email
+        password:
+          type: string
+          #description: users password
+    Refresh-token:
+      title: Refresh-token
+      type: object
+      properties:
+        refreshToken:
+          type: string
+    Authentication: 
+      title: Authentication Tokens
+      type: object
+      properties:
+        accessToken:
+          type: string
+          #description: accessToken 
+        refreshToken: 
+          type: string
+          #description: refreshToken
+    UserCreate:
+      title: User Create 
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+          format: password
+    User: 
+      title: User Model
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+          format: password
+        firstName:
+          type: string
+        lastName:
+          type: string
+        permissionFlags:
+          type: number
+    UserResponse:
+      title: User Response
       type: object
       properties:
         _id: 
@@ -188,37 +612,23 @@ components:
         __v:
           type: number
           #description: mongoDB object version key
-    Login:
-      title: Login
-      type: object
-      properties:
-        email:
-          type: string
-          #description: users email
-        password:
-          type: string
-          #description: users password
-    Authentication: 
-      title: Authentication Tokens
-      type: object
-      properties:
-        accessToken:
-          type: string
-          #description: accessToken 
-        refreshToken: 
-          type: string
-          #description: refreshToken 
     Movie:
       title: Movie
       type: object
       properties:
         name:
           type: string
+          example: Updated Movie Name
         description:
           type: string
-
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT 
+          example: Updated Movie Description
+    MovieResponse:
+      title: Movie Response
+      type: object
+      properties:
+        _id: 
+          type: string
+        name:
+          type: string
+        description:
+          type: string
