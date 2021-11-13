@@ -1,5 +1,4 @@
-export interface PutVideoDto {
+export interface PutMovieDto {
     name: String;
     description: String;
-    //tags?
 }

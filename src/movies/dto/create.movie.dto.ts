@@ -1,4 +1,4 @@
-export interface CreateVideoDto {
+export interface CreateMovieDto {
   name: String;
   description: String;
 }

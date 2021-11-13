@@ -1,24 +1,24 @@
 import express from 'express';
 import debug from 'debug';
 import usersService from '../../users/services/users.service';
-import videosService from '../../videos/services/videos.service';
+import moviesService from '../../movies/services/movies.service';
 
-const log: debug.IDebugger = debug('app:videos-controller');
+const log: debug.IDebugger = debug('app:movies-controller');
 
 class FavoritesController {
     async listFavorites(req: express.Request, res: express.Response) {
         const user = await usersService.readById(res.locals.jwt.userId);
-        const favoriteVideos = await videosService.getByIds(user.favorites);
-        res.status(200).send(favoriteVideos);
+        const favoriteMovies = await moviesService.getByIds(user.favorites);
+        res.status(200).send(favoriteMovies);
     }
 
     async addToFavorites(req: express.Request, res: express.Response) {
-        await usersService.addVideoToFavorites(res.locals.jwt.userId, req.body.id);
+        await usersService.addMovieToFavorites(res.locals.jwt.userId, req.body.id);
         res.status(204).send();
     }
 
     async deleteFromFavorites(req: express.Request, res: express.Response) {
-        await usersService.deleteVideoFromFavorites(res.locals.jwt.userId, req.body.id);
+        await usersService.deleteMovieFromFavorites(res.locals.jwt.userId, req.body.id);
         res.status(204).send();
     }
 }

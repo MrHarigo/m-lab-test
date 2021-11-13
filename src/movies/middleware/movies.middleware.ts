@@ -1,35 +1,34 @@
 import express from 'express';
-import videosService from '../services/videos.service';
-import userService from '../services/videos.service';
+import MoviesService from '../services/Movies.service';
 
-class VideosMiddleware {
+class MoviesMiddleware {
 
-    async validateVideoExists(
+    async validateMovieExists(
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
     ) {
-        const video = await videosService.readById(req.params.videoId);
-        if (video) {
-            res.locals.video = video;
+        const movie = await MoviesService.readById(req.params.movieId);
+        if (movie) {
+            res.locals.movie = movie;
             next();
         } else {
             res.status(404).send({
-                errors: [`Video ${req.params.videoId} not found`],
+                errors: [`Movie ${req.params.movieId} not found`],
             });
         }
     }
 
-    async extractVideoId(
+    async extractMovieId(
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
     ) {
-        req.body.id = req.params.videoId;
+        req.body.id = req.params.movieId;
         next();
     }
 
-    async extractVideoSearchQuery(
+    async extractMovieSearchQuery(
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
@@ -39,4 +38,4 @@ class VideosMiddleware {
     }
 }
 
-export default new VideosMiddleware();
+export default new MoviesMiddleware();

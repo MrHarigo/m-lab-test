@@ -1,6 +1,6 @@
 import { CommonRoutesConfig } from '../common/common.routes.config';
-import VideosController from './controllers/videos.controller';
-import VideosMiddleware from './middleware/videos.middleware';
+import MoviesController from './controllers/movies.controller';
+import MoviesMiddleware from './middleware/movies.middleware';
 import jwtMiddleware from '../auth/middleware/jwt.middleware';
 import PermissionMiddleware from '../common/middleware/common.permission.middleware';
 import { PermissionFlag } from '../common/middleware/common.permissionflag.enum';
@@ -9,17 +9,17 @@ import { body } from 'express-validator';
 
 import express from 'express';
 
-export class VideosRoutes extends CommonRoutesConfig {
+export class MoviesRoutes extends CommonRoutesConfig {
     constructor(app: express.Application) {
         super(app, 'MoviesRoutes');
     }
 
     configureRoutes(): express.Application {
         this.app
-            .route(`/videos`)
+            .route(`/movies`)
             .get(
-                VideosMiddleware.extractVideoSearchQuery,
-                VideosController.listVideos
+                MoviesMiddleware.extractMovieSearchQuery,
+                MoviesController.listMovies
             )
             .post(
                 body('name')
@@ -33,25 +33,25 @@ export class VideosRoutes extends CommonRoutesConfig {
                 ),
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
                 // Not checking for existing duplicates, due to the fact that films might have same names
-                VideosController.createVideo
+                MoviesController.createMovie
             );
 
-        this.app.param(`videoId`, VideosMiddleware.extractVideoId);
+        this.app.param(`movieId`, MoviesMiddleware.extractMovieId);
         this.app
-            .route(`/videos/:videoId`)
+            .route(`/movies/:movieId`)
             .all(
-                VideosMiddleware.validateVideoExists,
+                MoviesMiddleware.validateMovieExists,
             )
-            .get(VideosController.getVideoById)
+            .get(MoviesController.getMovieById)
             .delete(
                 jwtMiddleware.validJWTNeeded,
                 PermissionMiddleware.permissionFlagRequired(
                     PermissionFlag.EDITOR_PERMISSION
                 ),
-                VideosController.removeVideo
+                MoviesController.removeMovie
             );
 
-        this.app.put(`/videos/:videoId`, [
+        this.app.put(`/movies/:movieId`, [
             body('name')
                 .isString()
                 .isLength({ min: 1 })
@@ -62,10 +62,10 @@ export class VideosRoutes extends CommonRoutesConfig {
                 PermissionFlag.EDITOR_PERMISSION
             ),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
-            VideosController.put,
+            MoviesController.put,
         ]);
 
-        this.app.patch(`/videos/:videoId`, [
+        this.app.patch(`/movies/:movieId`, [
             body('name')
                 .isString()
                 .isLength({ min: 1 })
@@ -76,7 +76,7 @@ export class VideosRoutes extends CommonRoutesConfig {
             PermissionMiddleware.permissionFlagRequired(
                 PermissionFlag.EDITOR_PERMISSION
             ),
-            VideosController.patch,
+            MoviesController.patch,
         ]);
         
         return this.app;

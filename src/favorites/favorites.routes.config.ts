@@ -3,7 +3,7 @@ import jwtMiddleware from '../auth/middleware/jwt.middleware';
 
 import express from 'express';
 import FavoritesController from './controllers/favorites.controller';
-import VideosMiddleware from '../videos/middleware/videos.middleware';
+import MoviesMiddleware from '../movies/middleware/movies.middleware';
 import FavoritesMiddleware from './middleware/favorites.middleware';
 
 export class FavoritesRoutes extends CommonRoutesConfig {
@@ -19,19 +19,19 @@ export class FavoritesRoutes extends CommonRoutesConfig {
                 FavoritesController.listFavorites
             )
 
-        this.app.param(`videoId`, VideosMiddleware.extractVideoId);
+        this.app.param(`movieId`, MoviesMiddleware.extractMovieId);
         this.app
-            .route(`/favorites/:videoId`)
+            .route(`/favorites/:movieId`)
             .all(
                 jwtMiddleware.validJWTNeeded,
-                VideosMiddleware.validateVideoExists
+                MoviesMiddleware.validateMovieExists
             )
             .post(
-                FavoritesMiddleware.validateVideoIsNotFavorited,
+                FavoritesMiddleware.validateMovieIsNotFavorited,
                 FavoritesController.addToFavorites
             )
             .delete(   
-                FavoritesMiddleware.validateVideoIsFavorited,
+                FavoritesMiddleware.validateMovieIsFavorited,
                 FavoritesController.deleteFromFavorites
             );
         

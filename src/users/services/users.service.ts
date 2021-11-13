@@ -36,12 +36,12 @@ class UsersService implements CRUD {
         return UsersDao.getUserByEmailWithPassword(email);
     }
 
-    async addVideoToFavorites(userId: string, videoId: string) {
-        return UsersDao.addVideoToFavorites(userId, videoId);
+    async addMovieToFavorites(userId: string, movieId: string) {
+        return UsersDao.addMovieToFavorites(userId, movieId);
     }
 
-    async deleteVideoFromFavorites(userId: string, videoId: string) {
-        return UsersDao.removeVideoFromFavorites(userId, videoId);
+    async deleteMovieFromFavorites(userId: string, movieId: string) {
+        return UsersDao.removeMovieFromFavorites(userId, movieId);
     }
 }
 
