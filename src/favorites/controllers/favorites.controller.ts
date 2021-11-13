@@ -1,7 +1,5 @@
 import express from 'express';
-//import videosService from '../services/videos.service';
 import debug from 'debug';
-//import { PatchVideoDto } from '../dto/patch.video.dto';
 import usersService from '../../users/services/users.service';
 import videosService from '../../videos/services/videos.service';
 
@@ -19,10 +17,10 @@ class FavoritesController {
         res.status(204).send();
     }
 
-    // async deleteFromFavorites(req: express.Request, res: express.Response) {
-    //     log(await videosService.deleteById(req.body.id));
-    //     res.status(204).send();
-    // }
+    async deleteFromFavorites(req: express.Request, res: express.Response) {
+        await usersService.deleteVideoFromFavorites(res.locals.jwt.userId, req.body.id);
+        res.status(204).send();
+    }
 }
 
 export default new FavoritesController();

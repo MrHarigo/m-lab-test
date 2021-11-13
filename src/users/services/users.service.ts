@@ -39,6 +39,10 @@ class UsersService implements CRUD {
     async addVideoToFavorites(userId: string, videoId: string) {
         return UsersDao.addVideoToFavorites(userId, videoId);
     }
+
+    async deleteVideoFromFavorites(userId: string, videoId: string) {
+        return UsersDao.removeVideoFromFavorites(userId, videoId);
+    }
 }
 
 export default new UsersService();

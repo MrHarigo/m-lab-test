@@ -77,16 +77,23 @@ class UsersDao {
         return existingUser;
     }
 
-    async addVideoToFavorites(
-        userId: string,
-        videoId: string
-    ) {
+    async addVideoToFavorites(userId: string, videoId: string) {
         const existingUser = await this.User.findOneAndUpdate(
             { _id: userId },
             { $push: { favorites: videoId } },
             { new: true }
         ).exec();
         
+        return existingUser;
+    }
+
+    async removeVideoFromFavorites(userId: string, videoId: string) {
+        const existingUser = await this.User.findOneAndUpdate(
+            { _id: userId },
+            { $pull: { favorites: videoId } },
+            { new: true }
+        ).exec();
+
         return existingUser;
     }
 }
