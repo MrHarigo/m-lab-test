@@ -10,17 +10,18 @@ In order to run the cloned codebase directly, you need to have Node.js and Docke
   - `npm start`
   - `npm run debug`
 
-# Stuff To Finish
- - user unit tests (for complete coverage)
- - video unit tests
- - video search functionality (tags?) + tests
- - separate tests for controller/service/model
+ # Stuff To Finish
+ - better unit test structure (additional db / more beforeTest functions)
+ - basic video/favorites unit tests
+ - better error handling/error codes
  - deploy/containerize for easier checks
  
-# Stuff To Add
+ # Stuff To Add
+ - change _id to id
  - deactivation of authorization tokens
  - further containerization
  - creating additional db for test runs?
+ - separate tests for controller/service/model
  - CI/CD
  - jsdoc for better documentation
 

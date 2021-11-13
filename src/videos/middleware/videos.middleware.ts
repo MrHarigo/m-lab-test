@@ -28,6 +28,15 @@ class VideosMiddleware {
         req.body.id = req.params.videoId;
         next();
     }
+
+    async extractVideoSearchQuery(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        req.body.searchQuery = req.query.search;
+        next();
+    }
 }
 
 export default new VideosMiddleware();

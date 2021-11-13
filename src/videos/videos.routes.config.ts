@@ -18,7 +18,7 @@ export class VideosRoutes extends CommonRoutesConfig {
         this.app
             .route(`/videos`)
             .get(
-                jwtMiddleware.validJWTNeeded,
+                VideosMiddleware.extractVideoSearchQuery,
                 VideosController.listVideos
             )
             .post(
@@ -27,6 +27,10 @@ export class VideosRoutes extends CommonRoutesConfig {
                     .isLength({ min: 1 })
                     .withMessage('Must include a name (non-empty string)'),
                 body('description').isString(),
+                jwtMiddleware.validJWTNeeded,
+                PermissionMiddleware.permissionFlagRequired(
+                    PermissionFlag.EDITOR_PERMISSION
+                ),
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
                 // Not checking for existing duplicates, due to the fact that films might have same names
                 VideosController.createVideo
@@ -37,13 +41,13 @@ export class VideosRoutes extends CommonRoutesConfig {
             .route(`/videos/:videoId`)
             .all(
                 VideosMiddleware.validateVideoExists,
-                PermissionMiddleware.permissionFlagRequired(
-                    PermissionFlag.EDITOR_PERMISSION
-                ),
             )
             .get(VideosController.getVideoById)
             .delete(
-                
+                jwtMiddleware.validJWTNeeded,
+                PermissionMiddleware.permissionFlagRequired(
+                    PermissionFlag.EDITOR_PERMISSION
+                ),
                 VideosController.removeVideo
             );
 
@@ -53,10 +57,11 @@ export class VideosRoutes extends CommonRoutesConfig {
                 .isLength({ min: 1 })
                 .withMessage('Must include a name (non-empty string)'),
             body('description').isString(),
-            BodyValidationMiddleware.verifyBodyFieldsErrors,
+            jwtMiddleware.validJWTNeeded,
             PermissionMiddleware.permissionFlagRequired(
                 PermissionFlag.EDITOR_PERMISSION
             ),
+            BodyValidationMiddleware.verifyBodyFieldsErrors,
             VideosController.put,
         ]);
 
@@ -66,6 +71,7 @@ export class VideosRoutes extends CommonRoutesConfig {
                 .isLength({ min: 1 })
                 .withMessage('Must include a name (non-empty string)'),
             body('description').isString(),
+            jwtMiddleware.validJWTNeeded,
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             PermissionMiddleware.permissionFlagRequired(
                 PermissionFlag.EDITOR_PERMISSION

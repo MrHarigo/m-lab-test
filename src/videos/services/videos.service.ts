@@ -32,6 +32,10 @@ class VideosService implements CRUD {
     async getByIds(ids: [string]) {
         return VideosDao.getVideosByIds(ids);
     }
+
+    async search(searchQuery: string, limit: number, page: number) {
+        return VideosDao.getVideosBySearchQuery(searchQuery, limit, page);
+    }
 }
 
 export default new VideosService();

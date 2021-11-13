@@ -15,7 +15,8 @@ class VideosDao {
         _id: String,
         name: String,
         description: String,
-    }, { id: false });
+    }, { id: false })
+    .index({name: 'text', '$**': 'text'});
 
     Video = mongooseService.getMongoose().model('Videos', this.videoSchema);
 
@@ -35,15 +36,15 @@ class VideosDao {
     }
 
     async removeVideoById(videoId: string) {
-        return this.Video.deleteOne({ _id: videoId }).exec();
+        return await this.Video.deleteOne({ _id: videoId }).exec();
     }
 
     async getVideoById(videoId: string) {
-        return this.Video.findOne({ _id: videoId }).populate('Video').exec();
+        return await this.Video.findOne({ _id: videoId }).populate('Video').exec();
     }
 
     async getVideos(limit = 25, page = 0) {
-        return this.Video.find()
+        return await this.Video.find()
             .limit(limit)
             .skip(limit * page)
             .exec();
@@ -67,6 +68,15 @@ class VideosDao {
             { _id: { $in: ids } }
         ).exec();
         return videos;
+    }
+
+    async getVideosBySearchQuery(searchQuery: string, limit = 25, page = 0) {
+        return await this.Video.find(
+            { $text: { $search: searchQuery } }
+        )
+        .limit(limit)
+        .skip(limit * page)
+        .exec();
     }
 }
 

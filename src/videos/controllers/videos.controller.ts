@@ -1,13 +1,17 @@
 import express from 'express';
 import videosService from '../services/videos.service';
 import debug from 'debug';
-import { PatchVideoDto } from '../dto/patch.video.dto';
 
 const log: debug.IDebugger = debug('app:videos-controller');
 
 class VideosController {
     async listVideos(req: express.Request, res: express.Response) {
-        const videos = await videosService.list(100, 0);
+        let videos = [];
+        if (req.body.searchQuery) {
+            videos = await videosService.search(req.body.searchQuery, 100, 0);
+        } else {
+            videos = await videosService.list(100, 0);
+        }
         res.status(200).send(videos);
     }
 

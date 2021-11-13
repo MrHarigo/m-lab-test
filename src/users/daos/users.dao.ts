@@ -40,25 +40,25 @@ class UsersDao {
     }
 
     async getUserByEmail(email: string) {
-        return this.User.findOne({ email: email }).exec();
+        return await this.User.findOne({ email: email }).exec();
     }
 
     async getUserByEmailWithPassword(email: string) {
-        return this.User.findOne({ email: email })
+        return await this.User.findOne({ email: email })
             .select('_id email permissionFlags +password')
             .exec();
     }
 
     async removeUserById(userId: string) {
-        return this.User.deleteOne({ _id: userId }).exec();
+        return await this.User.deleteOne({ _id: userId }).exec();
     }
 
     async getUserById(userId: string) {
-        return this.User.findOne({ _id: userId }).populate('User').exec();
+        return await this.User.findOne({ _id: userId }).populate('User').exec();
     }
 
     async getUsers(limit = 25, page = 0) {
-        return this.User.find()
+        return await this.User.find()
             .limit(limit)
             .skip(limit * page)
             .exec();
