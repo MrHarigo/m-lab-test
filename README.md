@@ -1,3 +1,4 @@
+[![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg)](https://github.com/google/gts)
 # Quick Start Guide
 In order to run the cloned codebase directly, you need to have Node.js and Docker installed.
 
