@@ -1,13 +1,13 @@
 FROM node:14-slim
 
 RUN mkdir -p /usr/src/app
-
 WORKDIR /usr/src/app
 
-COPY . .
-
+COPY package.json /usr/src/app/
 RUN npm install
+
+COPY . /usr/src/app
 
 EXPOSE 3000
 
-CMD ["node", "./dist/app.js"]
+CMD ["npm", "start"]

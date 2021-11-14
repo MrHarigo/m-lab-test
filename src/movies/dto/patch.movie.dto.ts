@@ -1,3 +1,3 @@
-import { PutMovieDto } from './put.movie.dto';
+import {PutMovieDto} from './put.movie.dto';
 
-export interface PatchMovieDto extends Partial<PutMovieDto> {}
+export type PatchMovieDto = Partial<PutMovieDto>;

@@ -1,21 +1,21 @@
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 const dotenvResult = dotenv.config();
 if (dotenvResult.error) {
-    throw dotenvResult.error;
+  throw dotenvResult.error;
 }
 
-import express from 'express';
+import * as express from 'express';
 import * as http from 'http';
 import * as winston from 'winston';
 import * as expressWinston from 'express-winston';
-import cors from 'cors';
-import { CommonRoutesConfig } from './src/common/common.routes.config';
-import { UsersRoutes } from './src/users/users.routes.config';
-import { AuthRoutes } from './src/auth/auth.routes.config';
-import { MoviesRoutes } from './src/movies/movies.routes.config';
-import { FavoritesRoutes } from './src/favorites/favorites.routes.config';
+import * as cors from 'cors';
+import {CommonRoutesConfig} from './src/common/common.routes.config';
+import {UsersRoutes} from './src/users/users.routes.config';
+import {AuthRoutes} from './src/auth/auth.routes.config';
+import {MoviesRoutes} from './src/movies/movies.routes.config';
+import {FavoritesRoutes} from './src/favorites/favorites.routes.config';
 import debug from 'debug';
-import helmet from 'helmet';
+import * as helmet from 'helmet';
 
 const YAML = require('yamljs');
 const swaggerUi = require('swagger-ui-express');
@@ -33,19 +33,19 @@ app.use(helmet());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const loggerOptions: expressWinston.LoggerOptions = {
-    transports: [new winston.transports.Console()],
-    format: winston.format.combine(
-        winston.format.json(),
-        winston.format.prettyPrint(),
-        winston.format.colorize({ all: true })
-    ),
+  transports: [new winston.transports.Console()],
+  format: winston.format.combine(
+    winston.format.json(),
+    winston.format.prettyPrint(),
+    winston.format.colorize({all: true})
+  ),
 };
 
 if (!process.env.DEBUG) {
-    loggerOptions.meta = false; // when not debugging, make terse
-    if (typeof global.it === 'function') {
-        loggerOptions.level = 'http'; // for non-debug test runs, squelch entirely
-    }
+  loggerOptions.meta = false; // when not debugging, make terse
+  if (typeof global.it === 'function') {
+    loggerOptions.level = 'http'; // for non-debug test runs, squelch entirely
+  }
 }
 
 app.use(expressWinston.logger(loggerOptions));
@@ -57,11 +57,11 @@ routes.push(new FavoritesRoutes(app));
 
 const runningMessage = `Server running at http://localhost:${port}`;
 app.get('/', (req: express.Request, res: express.Response) => {
-    res.status(200).send(runningMessage)
+  res.status(200).send(runningMessage);
 });
 export default server.listen(port, () => {
-    routes.forEach((route: CommonRoutesConfig) => {
-        debugLog(`Routes configured for ${route.getName()}`);
-    });
-    console.log(runningMessage);
+  routes.forEach((route: CommonRoutesConfig) => {
+    debugLog(`Routes configured for ${route.getName()}`);
+  });
+  console.log(runningMessage);
 });

@@ -13,7 +13,6 @@ In order to run the cloned codebase directly, you need to have Node.js and Docke
  # Stuff To Finish
  - better unit test structure (additional db / more beforeTest functions)
  - basic movie/favorites unit tests
- - better error handling/error codes
  - deploy/containerize for easier checks
  
  # Stuff To Add

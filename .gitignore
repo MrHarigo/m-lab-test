@@ -110,3 +110,5 @@ data
 
 # MacOS dekstop file
 .DS_Store
+
+build/
