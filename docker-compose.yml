@@ -4,5 +4,34 @@ services:
     image: mongo
     volumes:
       - ./data:/data/db
+#    networks:
+#      api_net:
+#        aliases:
+#          - mongo
+#    expose:
+#      - "27017"
     ports:
       - "27017:27017"
+#  api:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#      target: base
+#    volumes:
+#      - ./src:/home/node/app/src
+#      - ./nodemon.json:/home/node/app/nodemon.json
+#    container_name: monstar-lab-api
+#    networks:
+#      api_net:
+#        aliases:
+#          - api
+#    depends_on:
+#      - mongo
+#    expose:
+#      - '3000'
+#    ports:
+#      - '3000:3000'
+#    command: npm run debug
+
+networks:
+  api_net:

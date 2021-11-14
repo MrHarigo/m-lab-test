@@ -17,6 +17,12 @@
     "pretest": "npm run compile",
     "posttest": "npm run lint"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrHarigo/m-lab-test.git"
+  },
+  "author": "MrHarigo",
+  "license": "MIT",
   "dependencies": {
     "argon2": "^0.27.0",
     "cors": "^2.8.5",
