@@ -1,12 +1,10 @@
 [![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg)](https://github.com/google/gts)
 # Quick Start Guide
-In order to run the cloned codebase directly, you need to have Node.js (>=12.0.0) and Docker installed.
+In order to run the cloned codebase directly, you need to have Node.js (>=12.0.0) installed.
 
 1. Run `npm i` to install dependencies.
-2. Run `sudo docker-compose up -d` to get a MongoDB instance running.
 3. Make your own `.env` file in the project root, following the key name in [`.env.example`].
-4. In the project directory run `mongorestore --nsInclude=api-db.users` to generate admin user 
-(email: admin@admin.com, password: admin)
+(for the purpose of easier testing - I presaved values in `.env.example` so that they can be used without changing (however, test user for Mongo Atlas is going to expire in a week))
 4. From there, use these commands for running/testing the project:
   - `npm run test`
   - `npm run test-debug`
@@ -14,6 +12,7 @@ In order to run the cloned codebase directly, you need to have Node.js (>=12.0.0
   - `npm start`
   - `npm run debug`
 5. Go to `localhost:3000/api-docs` in your browser for further OpenAPI testing
+6. Login as admin (email:admin, password:admin) through `/auth` and enter the `accessToken` value under the `Authorize` button at the top of the page to use endpoints which require admin rights.
 
  # Stuff To Finish
  - better unit test structure (additional db / more beforeTest functions)

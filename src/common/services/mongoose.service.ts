@@ -11,6 +11,7 @@ class MongooseService {
     serverSelectionTimeoutMS: 5000,
     useFindAndModify: false,
   };
+  mongoDBConnectionString = process.env.MONGODB_URI || '';
 
   constructor() {
     this.connectWithRetry();
@@ -23,7 +24,7 @@ class MongooseService {
   connectWithRetry = () => {
     log('Attempting MongoDB connection (will retry if needed)');
     mongoose
-      .connect('mongodb://localhost:27017/api-db', this.mongooseOptions)
+      .connect(this.mongoDBConnectionString, this.mongooseOptions)
       .then(() => {
         log('MongoDB is connected');
       })

@@ -4,9 +4,7 @@ import * as jwt from 'jsonwebtoken';
 import * as crypto from 'crypto';
 
 const log: debug.IDebugger = debug('app:auth-controller');
-
-// @ts-expect-error depr
-const jwtSecret: string = process.env.JWT_SECRET;
+const jwtSecret = process.env.JWT_SECRET || '';
 const tokenExpirationInSeconds = 36000;
 
 class AuthController {

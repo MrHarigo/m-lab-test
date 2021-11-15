@@ -13,9 +13,12 @@
     "clean": "gts clean",
     "compile": "tsc",
     "fix": "gts fix",
+    "tsc": "tsc",
+    "postinstall": "npm run tsc",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
-    "posttest": "npm run lint"
+    "posttest": "npm run lint",
+    "deploy": "git add . && git commit -m Heroku && git push heroku master"
   },
   "repository": {
     "type": "git",
