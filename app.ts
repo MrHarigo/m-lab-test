@@ -1,7 +1,9 @@
 import * as dotenv from 'dotenv';
-const dotenvResult = dotenv.config();
-if (dotenvResult.error) {
-  throw dotenvResult.error;
+if (process.env.NODE_ENV !== 'production') {
+  const dotenvResult = dotenv.config();
+  if (dotenvResult.error) {
+    throw dotenvResult.error;
+  }
 }
 
 import * as express from 'express';
