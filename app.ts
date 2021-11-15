@@ -25,7 +25,6 @@ const swaggerDocument = YAML.load('./swagger-config.yaml');
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
-const port = 3000;
 const routes: Array<CommonRoutesConfig> = [];
 const debugLog: debug.IDebugger = debug('app');
 
@@ -57,11 +56,13 @@ routes.push(new AuthRoutes(app));
 routes.push(new MoviesRoutes(app));
 routes.push(new FavoritesRoutes(app));
 
-const runningMessage = `Server running at http://localhost:${port}`;
+const runningMessage = `Server running at http://localhost:${
+  process.env.PORT || 3000
+}`;
 app.get('/', (req: express.Request, res: express.Response) => {
   res.status(200).send(runningMessage);
 });
-export default server.listen(port, () => {
+export default server.listen(process.env.PORT || 3000, () => {
   routes.forEach((route: CommonRoutesConfig) => {
     debugLog(`Routes configured for ${route.getName()}`);
   });
