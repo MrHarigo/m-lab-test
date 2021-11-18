@@ -1,4 +1,5 @@
-[![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg)](https://github.com/google/gts)
+[![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg)](https://github.com/google/gts)[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
  # Heroku version
  This app is published on heroku: https://montar-lab-test-app.herokuapp.com/api-docs/
 
@@ -22,7 +23,6 @@ Login as admin (email:admin@admin.com, password:admin) through `/auth` and enter
 
  # Stuff To Finish
  - better unit test structure (additional db / more beforeTest functions)
- - basic movie/favorites unit tests
  - deploy/containerize for easier checks
  
  # Stuff To Add
@@ -33,12 +33,6 @@ Login as admin (email:admin@admin.com, password:admin) through `/auth` and enter
  - separate tests for controller/service/model
  - CI/CD
  - jsdoc for better documentation
-
- # Notes
- The biggest regret would be not having enough tests. Ended up spending too much time on configuring lint, and refactoring the code for the new config.
- The second biggest regret would be not containerizing/deploying the project, if it ends up not running on the machine of the person, who is going to be checking it :)
-
- Amount of the time spend: ~25? hard to tell, probably more
-
- I am most probably going to finish all of the things left in #stuffToFinish and #stuffToAdd in the next few weeks, as I'll partially use this project as a base for my pet project.
+ - husky
+ - logger (log4js)
 
